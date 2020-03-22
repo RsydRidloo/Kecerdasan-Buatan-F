@@ -1,110 +1,105 @@
-#include <stdio.h>
-#include <conio.h>   
-#include <Windows.h>   
-#define N 8  
-//This method is used to color the characters  
-void Color(int col) {  
+ 
+    //Metode ini digunakan untuk mewarnai karakter
+    void Color(int col) {  
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);  
     SetConsoleTextAttribute(hConsole, col);  
-}  
-//This method print the final solution  
-void printSolution(int board[N][N]) {  
-    for (int i = 0; i < N; i++) {  
-        for (int j = 0; j < N; j++) {  
-            if (board[i][j] == 1) {  
-                Color(2);  
-                printf("%d ", board[i][j]);  
-            } else {  
-                Color(15);  
-                printf("%d ", board[i][j]);  
-            }  
-        }  
-        printf("\n");  
     }  
-}  
-//This method checks whether it is safe to place the queen in particular row and column.  
-//This will return true if it is safe to place the queen and false otherwise.  
-bool isSafe(int board[N][N], int row, int col) {  
+    //Metode ini untuk mencetak solusi akhir  
+    void printSolution(int board[N][N]) {  
+        for (int i = 0; i < N; i++) {  
+            for (int j = 0; j < N; j++) {  
+                if (board[i][j] == 1) {  
+                    Color(2);  
+                    printf("%d ", board[i][j]);  
+                } else {  
+                    Color(15);  
+                    printf("%d ", board[i][j]);  
+                }  
+            }  
+            printf("\n");  
+        }  
+    }  
+    // Metode ini memeriksa apakah aman untuk menempatkan ratu di baris dan kolom tertentu.
+     // Ini akan return true jika aman untuk menempatkan ratu dan salah jika tidak.
+    bool isSafe(int board[N][N], int row, int col) {  
     int i, j;  
-    /* Check this row on left side */  
+    /* Periksa baris di sisi kiri */  
     for (i = 0; i < col; i++)  
         if (board[row][i]) return false;  
-    /* Check upper diagonal on left side */  
+    /* Periksa diagonal atas di sisi kiri */  
     for (i = row, j = col; i >= 0 && j >= 0; i--, j--)  
         if (board[i][j]) return false;  
-    /* Check lower diagonal on left side */  
+    /* Periksa diagonal bawah di sisi kiri */  
     for (i = row, j = col; j >= 0 && i < N; i++, j--)  
         if (board[i][j]) return false;  
     return true;  
-}  
-//A recursive utility problem to solve N queens problem.  
-bool solveNQUtil(int board[N][N], int col) {  
-    /* base case: If all queens are placed 
-    then return true */  
+    }  
+
+    //Masalah utilitas rekursif untuk memecahkan masalah N queens.
+    bool solveNQUtil(int board[N][N], int col) {  
+    /* base case: Jika semua ratu ditempatkan lalu return true */  
     if (col >= N) return true;  
-    /* Consider this column and try placing 
-    this queen in all rows one by one */  
+    /* Pertimbangkan kolom  dan coba tempatkan ratu di semua baris satu per satu */  
     for (int i = 0; i < N; i++) {  
-        /* Check if queen can be placed on 
-        board[i][col] */  
+        /* Periksa apakah ratu dapat ditempatkan pada board[i][col] */  
         if (isSafe(board, i, col)) {  
-            /* Place this queen in board[i][col] */  
+            /* Tempatkan ratu pada board[i][col] */  
             board[i][col] = 1;  
-       0     /* recur to place rest of the queens */  
+            /* berulang untuk menempatkan sisa ratu */  
             if (solveNQUtil(board, col + 1)) return true;  
-            /* If placing queen in board[i][col] 
-            doesn't lead to a solution, then 
-            remove queen from board[i][col] */  
+            /* Jika menempatkan ratu di board[i][col] 
+            tidak mengarah ke solusi, lalu hapus ratu dari board[i][col] */  
             board[i][col] = 0; // BACKTRACK  
         }  
     }  
-    /* If queen can not be place in any row in 
-    this colum col then return false */  
+    /* Jika ratu tidak dapat ditempatkan di baris mana pun di kolom col ini, lalu
+     return false */  
     return false;  
-}  
-/* This function solves the N Queen problem using 
-Backtracking. It mainly uses solveNQUtil() to 
-solve the problem. It returns false if queens 
-cannot be placed, otherwise return true and 
-prints placement of queens in the form of 1s. 
-Please note that there may be more than one 
-solutions, this function prints one of the feasible soutions*/  
-bool solveNQ() {  
-    int board[N][N] = {  
-        {  
-            0,  
-            0,  
-            0,  
-            0  
-        },  
-        {  
-            0,  
-            0,  
-            0,  
-            0  
-        },  
-        {  
-            0,  
-            0,  
-            0,  
-            0  
-        },  
-        {  
-            0,  
-            0,  
-            0,  
-            0  
-        }  
-    };  
-    if (solveNQUtil(board, 0) == false) {  
-        printf("Solution does not exist");  
-        return false;  
     }  
-    printSolution(board);  
-    return true;  
-}  
-int main() {  
-    solveNQ();  
-    _getch();  
-    return 0;  
-} 
+    
+    /* Fungsi ini memecahkan masalah N Queen menggunakan
+    Backtracking.Terutana ini menggunakan solveNQUtil () untuk
+    menyelesaikan masalah. Ini return false jika ratu
+    tidak dapat ditempatkan, sebaliknya return true dan
+    mencetak penempatan ratu dalam bentuk 1s. Harap dicatat bahwa mungkin ada lebih dari satu
+    solusi, fungsi ini mencetak salah satu sesi layak
+    */  
+    bool solveNQ() {  
+        int board[N][N] = {  
+            {  
+                0,  
+                0,  
+                0,  
+                0  
+            },  
+            {  
+                0,  
+                0,  
+                0,  
+                0  
+            },  
+            {  
+                0,  
+                0,  
+                0,  
+                0  
+            },  
+            {  
+                0,  
+                0,  
+                0,  
+                0  
+            }  
+        };  
+        if (solveNQUtil(board, 0) == false) {  
+            printf("Solution does not exist");  
+            return false;  
+        }  
+            printSolution(board);  
+            return true;  
+    }  
+        int main() {  
+        solveNQ();  
+        _getch();  
+        return 0;  
+    } 
