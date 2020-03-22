@@ -1,4 +1,6 @@
  
+    https://github.com/TropEX/Kecerdasan-Buatan-F/issues/1#issue-585638079
+    
     //Metode ini digunakan untuk mewarnai karakter
     void Color(int col) {  
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);  
