@@ -5,15 +5,15 @@ h(n) >= 0 sehingga h(G) = 0 untuk goal G.
 jadi menurut saya tidak ada perbedaan antara heuristic 1 & 2, 
 melainkan heuristic itu merupakan metode algoritma informed search
 
-      Program untuk mencetak jalur dari simpul akar ke simpul tujuan
-      untuk algoritma puzzle M * M -1 menggunakan Branch and Bound
-Solusinya mengasumsikan bahwa contoh puzzle dapat dipecahkan 
+    //Program untuk mencetak path dari root node ke destination node
+    //untuk algoritma puzzle M * M -1 menggunakan Branch and Bound
+    //Solusinya mengasumsikan bahwa contoh puzzle dapat dipecahkan 
     #include <bits/stdc++.h> 
-using namespace std; 
-#define M 3 
+    using namespace std; 
+    #define M 3 
 
-// state space tree nodes 
-struct Node 
+   
+    struct Node 
 { 
  // stores the parent node of the current node 
  // helps in tracing path when the answer is found 
