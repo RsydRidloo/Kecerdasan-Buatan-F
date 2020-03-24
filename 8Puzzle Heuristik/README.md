@@ -5,6 +5,8 @@ h(n) >= 0 sehingga h(G) = 0 untuk goal G.
 jadi menurut saya tidak ada perbedaan antara heuristic 1 & 2, 
 melainkan heuristic itu merupakan metode algoritma informed search
 
+* Gambar compile & run dapat dilihat disini https://github.com/TropEX/Kecerdasan-Buatan-F/issues/2#issue-586691947
+
     //Program untuk mencetak path dari root node ke destination node
     //untuk algoritma puzzle M * M -1 menggunakan Branch and Bound
     //Solusinya mengasumsikan bahwa contoh puzzle dapat dipecahkan 
@@ -14,104 +16,98 @@ melainkan heuristic itu merupakan metode algoritma informed search
 
    
     struct Node 
-{ 
- // stores the parent node of the current node 
- // helps in tracing path when the answer is found 
- Node* parent; 
+    { 
+    // menyimpan parent node dari current node
+    // membantu dalam melacak jejak ketika jawabannya ditemukan
+    Node* parent; 
 
- // stores matrix 
- int mat[M][M]; 
+    // menyimpan matrix 
+    int mat[M][M]; 
 
- // stores blank tile coordinates 
- int a, b; 
+    // menyimpan kotak koordinat kosong 
+    int a, b; 
 
- // stores the number of misplaced tiles 
- int cost; 
+    // menyimpan jumlah kotak yang salah tempat
+    int cost; 
 
- // stores the number of moves so far 
- int level; 
-}; 
+     // menyimpan jumlah gerakan sejauh ini
+    int level; 
+    }; 
 
-// Function to print M x M matrix 
-int printMatrix(int mat[M][M]) 
-{ 
- for (int i = 0; i < M; i++) 
- { 
-  for (int j = 0; j < M; j++) 
-   printf("%d ", mat[i][j]); 
-  printf("\n"); 
- } 
-} 
+    // Fungsi untuk mencetak M x M matrix 
+    int printMatrix(int mat[M][M]) 
+    { 
+    for (int i = 0; i < M; i++){ 
+    for (int j = 0; j < M; j++) 
+        printf("%d ", mat[i][j]); 
+            printf("\n"); 
+        } 
+    }       
 
-// Function to allocate a new node 
-Node* newNode(int mat[M][M], int a, int b, int newA, 
-   int newB, int level, Node* parent) 
-{ 
- Node* node = new Node; 
+    //  Berfungsi untuk mengalokasikan node baru
+    Node* newNode(int mat[M][M], int a, int b, int newA, 
+        int newB, int level, Node* parent) 
+    { 
+        Node* node = new Node; 
 
- // set pointer for path to root 
- node->parent = parent; 
+    // atur pointer dari path ke root 
+        node->parent = parent; 
 
- // copy data from parent node to current node 
- memcpy(node->mat, mat, sizeof node->mat); 
+    // copy data dari parent node ke current node 
+        memcpy(node->mat, mat, sizeof node->mat); 
 
- // move tile by 1 position 
- swap(node->mat[a][b], node->mat[newA][newB]); 
+    // pindahkan kotak dengan 1 posisi 
+        swap(node->mat[a][b], node->mat[newA][newB]); 
 
- // set number of misplaced tiles 
- node->cost = INT_MAX; 
+    // atur jumlah kotak yang salah tempat 
+        node->cost = INT_MAX; 
 
- // set number of moves so far 
- node->level = level; 
+    // atur jumlah gerakan sejauh ini
+        node->level = level; 
 
- // update new blank tile cordinates 
- node->a = newA; 
- node->b = newB; 
+    // perbarui koordinat kotak kosong baru
+        node->a = newA; 
+        node->b = newB; 
+    return node; 
+    } 
 
- return node; 
-} 
+    // bawah, kiri, atas, kanan
+        int row[] = { 1, 0, -1, 0 }; 
+        int col[] = { 0, -1, 0, 1 }; 
 
-// botton, left, top, right 
-int row[] = { 1, 0, -1, 0 }; 
-int col[] = { 0, -1, 0, 1 }; 
+    // Berfungsi untuk menghitung jumlah ubin yang salah tempat
+    int calculateCost(int initial[M][M], int final[M][M]) 
+    { 
+       int count = 0; 
+       for (int i = 0; i < M; i++) 
+       for (int j = 0; j < M; j++) 
+            if (initial[i][j] && initial[i][j] != final[i][j]) 
+       count++; 
+     return count; 
+    } 
 
-// Function to calculate the number of misplaced tiles 
-// ie. number of non-blank tiles not in their goal position 
-int calculateCost(int initial[M][M], int final[M][M]) 
-{ 
- int count = 0; 
- for (int i = 0; i < M; i++) 
- for (int j = 0; j < M; j++) 
-  if (initial[i][j] && initial[i][j] != final[i][j]) 
-  count++; 
- return count; 
-} 
+    // Fungsi untuk memeriksa apakah (a, b) adalah koordinat matriks yang valid
+        int isSafe(int a, int b) 
+    { 
+         return (a >= 0 && a < M && b >= 0 && b < M); 
+    } 
 
-// Function to check if (a, b) is a valid matrix cordinate 
-int isSafe(int a, int b) 
-{ 
- return (a >= 0 && a < M && b >= 0 && b < M); 
-} 
+    // mencetak path dari root node ke destination node 
+    void printPath(Node* root){ 
+    if (root == NULL) 
+        return; 
+    printPath(root->parent); 
+    printMatrix(root->mat);     
+    printf("\n"); 
+    } 
 
-// print path from root node to destination node 
-void printPath(Node* root) 
-{ 
- if (root == NULL) 
-  return; 
- printPath(root->parent); 
- printMatrix(root->mat); 
-
- printf("\n"); 
-} 
-
-// Comparison object to be used to order the heap 
-struct comp 
-{ 
- bool operator()(const Node* lhs, const Node* rhs) const
- { 
-  return (lhs->cost + lhs->level) > (rhs->cost + rhs->level); 
- } 
-}; 
+    // Comparison object to be used to order the heap 
+    struct comp 
+    { 
+        bool operator()(const Node* lhs, const Node* rhs) const{
+        return (lhs->cost + lhs->level) > (rhs->cost + rhs->level); 
+        } 
+    }; 
 
 // Function to solve M*M - 1 puzzle algorithm using 
 // Branch and Bound. a and b are blank tile coordinates 
