@@ -1,0 +1,131 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+#define M 3 
+
+struct Node 
+{ 
+ Node* parent; 
+ int mat[M][M]; 
+ int a, b; 
+ int cost; 
+ int level; 
+}; 
+int printMatrix(int mat[M][M]) 
+{ 
+ for (int i = 0; i < M; i++) 
+ { 
+  for (int j = 0; j < M; j++) 
+   printf("%d ", mat[i][j]); 
+  printf("\n"); 
+ } 
+}  
+Node* newNode(int mat[M][M], int a, int b, int newA, 
+   int newB, int level, Node* parent) 
+{ 
+ Node* node = new Node; 
+ node->parent = parent; 
+ 
+ memcpy(node->mat, mat, sizeof node->mat); 
+ swap(node->mat[a][b], node->mat[newA][newB]); 
+
+ node->cost = INT_MAX; 
+ node->level = level; 
+ node->a = newA; 
+ node->b = newB; 
+
+ return node; 
+} 
+
+int row[] = { 1, 0, -1, 0 }; 
+int col[] = { 0, -1, 0, 1 }; 
+int calculateCost(int initial[M][M], int final[M][M]) 
+{ 
+ int count = 0; 
+ for (int i = 0; i < M; i++) 
+ for (int j = 0; j < M; j++) 
+  if (initial[i][j] && initial[i][j] != final[i][j]) 
+  count++; 
+ return count; 
+} 
+
+int isSafe(int a, int b) {
+ return (a >= 0 && a < M && b >= 0 && b < M); 
+} 
+
+void printPath(Node* root) 
+{ 
+ if (root == NULL) 
+  return; 
+ printPath(root->parent); 
+ printMatrix(root->mat); 
+
+ printf("\n"); 
+} 
+
+struct comp 
+{ 
+ bool operator()(const Node* lhs, const Node* rhs) const
+ { 
+  return (lhs->cost + lhs->level) > (rhs->cost + rhs->level); 
+ } 
+}; 
+
+void solve(int initial[M][M], int a, int b, 
+  int final[M][M]) 
+{ 
+
+ priority_queue<Node*, std::vector<Node*>, comp> pq; 
+
+ Node* root = newNode(initial, a, b, a, b, 0, NULL); 
+ root->cost = calculateCost(initial, final); 
+
+ pq.push(root); 
+
+ while (!pq.empty()) 
+ { 
+  Node* min = pq.top();  
+  pq.pop(); 
+
+  if (min->cost == 0) 
+  { 
+   printPath(min); 
+   return; 
+  } 
+
+  for (int i = 0; i < 4; i++) 
+  { 
+   if (isSafe(min->a + row[i], min->b + col[i])) 
+   { 
+    Node* child = newNode(min->mat, min->a, 
+       min->b, min->a + row[i], 
+       min->b + col[i], 
+       min->level + 1, min); 
+    child->cost = calculateCost(child->mat, final); 
+   
+    pq.push(child); 
+   } 
+  } 
+ } 
+} 
+
+
+int main() 
+{ 
+ int initial[M][M] = 
+ { 
+  {1, 2, 3}, 
+  {5, 6, 0}, 
+  {7, 8, 4} 
+ }; 
+ 
+ int final[M][M] = 
+ { 
+  {1, 2, 3}, 
+  {5, 8, 6}, 
+  {0, 7, 4} 
+ }; 
+
+ int a = 1, b = 2; 
+ solve(initial, a, b, final); 
+ return 0; 
+}
