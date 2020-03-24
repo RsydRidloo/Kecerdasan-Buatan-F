@@ -81,8 +81,8 @@
 	  void hillclimb (int t) {
    	  int h1 = t, x1, y1, htmp, div, temp, i, j, k;
    	  if (t == 0) {
-       		 for(i=0; i < 8; i++) {
-           	 cout <<"("<<pawn[i][0]+1<<","<<pawn[i][1]+1<<")"<< endl;
+       		for(i=0; i < 8; i++){
+           	cout <<"("<<pawn[i][0]+1<<","<<pawn[i][1]+1<<")"<< endl;
         }
         return;
         }
