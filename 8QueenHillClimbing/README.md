@@ -129,7 +129,7 @@
        		 }
    	    }
    	  for(i=0; i<8; i++) {
-       		 cout <<"("<<pawn[i][0]<<","<<pawn[i][1]<<")"<< endl;
+       		 cout <<"("<<pawn[i][0]<<","<<pawn[i][1]<<")";
     	  }
     	   hillclimb (match());
 	  }
