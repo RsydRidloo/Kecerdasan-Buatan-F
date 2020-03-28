@@ -38,12 +38,12 @@ permainan tic-tactoe.
 
     printf(" %c | %c | %c\n",gridChar(b[6]),gridChar(b[7]),gridChar(b[8]));
 
-}
+	}
 
 
-/* untuk mengecek setelah player melakukan langkah / mengisi karakter pada 
-papan itu mencapai kemenangan (sudah terbentuk garis). */
-int win(const int board[9]) {
+	/* untuk mengecek setelah player melakukan langkah / mengisi karakter pada 
+	papan itu mencapai kemenangan (sudah terbentuk garis). */
+	int win(const int board[9]) {
 	
     //menentukan apakah seorang pemain telah menang, return 0 sebaliknya.
     unsigned wins[8][3] = {{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
@@ -57,10 +57,10 @@ int win(const int board[9]) {
 
     }
     return 0;
-}
+	}
 
-//untuk berjalannya tic tac toe dengan menggunakan metode minimax.
-int minimax(int board[9], int player) {
+	//untuk berjalannya tic tac toe dengan menggunakan metode minimax.
+	int minimax(int board[9], int player) {
 
     //Bagaimana posisi pemain (giliran mereka) pada papan?
 
@@ -85,10 +85,10 @@ int minimax(int board[9], int player) {
 
     if(move == -1) return 0;
     return score;
-}
+	}
 
-//Fungsi untuk computer sebagai lawan untuk berjalan menentukan letak karakter.
-void computerMove(int board[9]) {
+	//Fungsi untuk computer sebagai lawan untuk berjalan menentukan letak karakter.
+	void computerMove(int board[9]) {
     int move = -1;
     int score = -2;
     int i;
@@ -115,11 +115,11 @@ void computerMove(int board[9]) {
 
     //returns skoe berdasarkan  minimax tree pada node yang diberikan 
     board[move] = 1;
-}
+	}
 
 
-//Fungsi untuk player utama berjalan menentukan letak karakter.
-void playerMove(int board[9]) {
+	//Fungsi untuk player utama berjalan menentukan letak karakter.
+	void playerMove(int board[9]) {
     int move = 0;
     do {
         printf("\nInput move ([0..8]): ");
@@ -127,10 +127,10 @@ void playerMove(int board[9]) {
         printf("\n");
     } while (move >= 9 || move < 0 && board[move] == 0);
     board[move] = -1;
-}
+	}
 
 
-int main() {
+	int main() {
     int board[9] = {0,0,0,0,0,0,0,0,0};
     
     //kotak komputer 1, kotak pemain -1.
