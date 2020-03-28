@@ -25,8 +25,8 @@ permainan tic-tactoe.
               }
             }	
 
-//Untuk mencetak papan tic tac toe.
-void draw(int b[9]) {
+	//Untuk mencetak papan tic tac toe.
+	void draw(int b[9]) {
 
     printf(" %c | %c | %c\n",gridChar(b[0]),gridChar(b[1]),gridChar(b[2]));
 
