@@ -9,6 +9,7 @@ dijalankan berulang kali, meningkatkan batas kedalaman dengan setiap iterasi sam
 * IDS menggabungkan depth-first pencari ruang-efisiensi dan kelengkapan luas-pertama pencarian ini (ketika faktor percabangan 
 terbatas). Ini adalah optimal ketika biaya jalan adalah fungsi non-penurunan kedalaman node.
 
+Jadi kesimpulannya  :
 * Menurutku kalau ids itu tidak bisa untuk menentukan 8 puzzle, dia prinsipnya sama kyk dfs, loopingnya akan terus jalan sampai 
 level paling bawah
 
