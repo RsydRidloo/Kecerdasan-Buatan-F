@@ -14,179 +14,172 @@ table Boolean untuk menyimpan simpul yang te lah dikunjungi sehingga tidak ada s
 
         #include <bits/stdc++.h> 
         using namespace std; 
-        #define N 3 
+        #define M 3 
 
-// state space tree nodes 
-struct Node 
-{ 
-	// stores the parent node of the current node 
-	// helps in tracing path when the answer is found 
-	Node* parent; 
+ 	struct Node 
+        { 
+        // menyimpan parent node dari current node
+        // membantu dalam melacak jejak ketika jawabannya ditemukan
+        Node* parent; 
 
-	// stores matrix 
-	int mat[N][N]; 
+        // menyimpan matrix 
+        int mat[M][M]; 
 
-	// stores blank tile coordinates 
-	int x, y;
+        // menyimpan kotak koordinat kosong 
+        int a, b; 
 
-	// stores the number of moves so far 
-	int level;
-}; 
+        // menyimpan jumlah kotak yang salah tempat
+        int cost; 
 
-// Function to print N x N matrix 
-int printMatrix(int mat[N][N]) 
-{ 
-	for (int i = 0; i < N; i++) 
+        // menyimpan jumlah gerakan sejauh ini
+        int level; 
+        }; 
+
+        // Fungsi untuk mencetak M x M matrix 
+        int printMatrix(int mat[M][M]) 
+        { 
+        for (int i = 0; i < M; i++){ 
+            for (int j = 0; j < M; j++) 
+            printf("%d ", mat[i][j]); 
+            printf("\n"); 
+            } 
+        }       
+
+        //Berfungsi untuk mengalokasikan node baru
+        Node* newNode(int mat[M][M], int a, int b, int newA, 
+            int newB, int level, Node* parent) 
+        { 
+            Node* node = new Node; 
+
+        // atur pointer dari path ke root 
+            node->parent = parent; 
+
+        // copy data dari parent node ke current node 
+            memcpy(node->mat, mat, sizeof node->mat); 
+
+        //Pindahkan kotak dengan 1 posisi 
+            swap(node->mat[a][b], node->mat[newA][newB]); 
+
+        //Atur jumlah kotak yang salah tempat 
+             node->cost = INT_MAX; 
+
+        //Atur jumlah gerakan sejauh ini
+            node->level = level; 
+
+        //Perbarui koordinat kotak kosong baru
+            node->a = newA; 
+            node->b = newB; 
+        return node; 
+        } 
+
+        //bawah, kiri, atas, kanan
+            int row[] = { 1, 0, -1, 0 }; 
+            int col[] = { 0, -1, 0, 1 }; 
+
+     // Fungsi untuk memeriksa apakah (a, b) adalah koordinat matriks yang valid
+             int isSafe(int a, int b) 
+        { 
+             return (a >= 0 && a < M && b >= 0 && b < M); 
+        } 
+
+        // mencetak path dari root node ke destination node 
+            void printPath(Node* root){ 
+                if (root == NULL) 
+            return; 
+                printPath(root->parent); 
+                printMatrix(root->mat);     
+                printf("\n"); 
+        } 
+
+	bool testing (int mat[M][M],int final[M][M]){
+ 	for (int i = 0; i < M; i++) 
 	{ 
-		for (int j = 0; j < N; j++){
-			printf("%d ", mat[i][j]); 
-		} 
-		printf("\n"); 
-	} 
-} 
-
-// Function to allocate a new node 
-Node* newNode(int mat[N][N], int x, int y, int newX, 
-			int newY, int level, Node* parent) 
-{ 
-	Node* node = new Node; 
-
-	// set pointer for path to root 
-	node->parent = parent; 
-
-	// copy data from parent node to current node 
-	memcpy(node->mat, mat, sizeof node->mat); 
-
-	// move tile by 1 position 
-	swap(node->mat[x][y], node->mat[newX][newY]); 
-
-	// set number of moves so far 
-	node->level = level; 
-
-	// update new blank tile cordinates 
-	node->x = newX; 
-	node->y = newY; 
-
-	return node; 
-} 
-
-// botton, left, top, right 
-int row[] = { 1, 0, -1, 0 }; 
-int col[] = { 0, -1, 0, 1 }; 
-
-
-// Function to check if (x, y) is a valid matrix cordinate 
-int isSafe(int x, int y) 
-{ 
-	return (x >= 0 && x < N && y >= 0 && y < N); 
-} 
-
-// print path from root node to destination node 
-void printPath(Node* root) 
-{ 
-	if (root == NULL) {
-		return;
-	} 
-	printPath(root->parent); 
-	printMatrix(root->mat); 
-	printf("\n"); 
-} 
-
-bool testing (int mat[N][N],int final [N] [N]){
- 	for (int i = 0; i < N; i++) 
-	{ 
-		for (int j = 0; j < N; j++) {
+		for (int j = 0; j < M; j++) {
 			if (mat [i] [j] != final [i] [j]){
 				return false;
-			} 
+				} 
+			}
 		}
-	}
- 	return true;
- }
+ 		return true;
+ 	}
 
-// Function to solve N*N - 1 puzzle algorithm using 
-// Branch and Bound. x and y are blank tile coordinates 
-// in initial state 
-void solve(int initial[N][N], int x, int y, 
-		int final[N][N]) 
-{ 
-	// Create a priority queue to store live nodes of 
-	// search tree; 
-	queue <Node*> pq;
-	
-	// create a root node and calculate its cost 
-	Node* root = newNode(initial, x, y, x, y, 0, NULL); 
-	
-	// Add root to list of live nodes; 
-	pq.push(root); 
+ 	/* Berfungsi untuk memecahkan algoritma puzzle M * M - 1 menggunakan
+           Branch dan Bound. a dan b adalah koordinat kotak kosong
+           dalam kondisi awal */
+          void solve(int initial[M][M], int a, int b, 
+          int final[M][M]) 
+          { 
+        // Buat prioritas queue untuk menyimpan live nodes dari search tree  
+            queue <Node*> pq;
 
-	// Finds a live node with least cost, 
-	// add its childrens to list of live nodes and 
-	// finally deletes it from the list. 
-	while (!pq.empty()) 
-	{ 
-		// Find a live node with least estimated cost 
-		Node* min = pq.front(); 
+        // buat root node and menghitung biayanya
+           Node* root = newNode(initial, a, b, a, b, 0, NULL); 
 
-		// The found node is deleted from the list of 
-		// live nodes 
-		pq.pop(); 
-			
-		// if min is an answer node 
-		if (testing (min->mat, final)) 
-		{ 
-			// print the path from root to destination; 
-			printPath(min); 
+        // Tambahkan root ke daftar live node 
+            pq.push(root); 
+
+        /* Menemukan live node dengan biaya paling sedikit,
+          tambahkan childerns ke daftar live node dan
+          menghapusnya dari daftar */
+          
+        while (!pq.empty()) 
+        { 
+        // Temukan live node dengan perkiraan biaya terendah
+            Node* min = pq.front(); 
+
+        // Node yang ditemukan dihapus dari daftar node hidup
+        pq.pop(); 
+
+        // jika min adalah answer node;
+        if (testing (min->mat, final)) 
+        { 
+        // cetak path dari root ke destination; 
+            	printPath(min); 
 			printf ("Move: %d",min->level);
-			return; 
-		} 
-		
-		// do for each child of min 
-		// max 4 children for a node 
-		for (int i = 0; i < 4; i++) 
-		{ 
-			if (isSafe(min->x + row[i], min->y + col[i])) 
-			{ 
-				// create a child node and calculate 
-				// its cost 
-				Node* child = newNode(min->mat, min->x, 
-							min->y, min->x + row[i], 
-							min->y + col[i], 
-							min->level + 1, min);  
+			return;
+        } 
 
-				// Add child to list of live nodes 
-				pq.push(child); 
-			} 
-		} 
-	} 
-} 
+        /* lakukan untuk setiap child min
+          maks 4 child untuk node */ 
+        for (int i = 0; i < 4; i++) 
+        { 
+            if (isSafe(min->a + row[i], min->b + col[i])) 
+        { 
+        // buat child node dan menghitung harganya 
+            Node* child = newNode(min->mat, min->a, 
+            min->b, min->a + row[i], 
+            min->b + col[i], 
+            min->level + 1, min); 
 
-// Driver code 
-int main() 
-{ 
-	// Initial configuration 
-	// Value 0 is used for empty space 
-	int initial[N][N] = 
-	{ 
-		{1, 2, 3}, 
-		{5, 6, 0}, 
-		{7, 8, 4} 
-	}; 
+        //Tambahkan child ke daftar dari live node
+            pq.push(child); 
+            } 
+          } 
+         } 
+        } 
+ 
+        int main() 
+        { 
+        // Konfigurasi awal 
+        // Nilai 0 digunakan untuk ruang kosong 
+            int initial[M][M] = 
+        { 
+            {1, 2, 3}, 
+            {5, 6, 0}, 
+            {7, 8, 4} 
+        }; 
 
-	// Solvable Final configuration 
-	// Value 0 is used for empty space 
-	int final[N][N] = 
-	{ 
-		{1, 2, 3}, 
-		{5, 8, 6}, 
-		{0, 7, 4} 
-	}; 
+        //Konfigurasi final yang dapat dipecahkan
+        //Nilai 0 digunakan untuk ruang kosong
+        int final[M][M] = 
+        { 
+            {1, 2, 3}, 
+            {5, 8, 6}, 
+            {0, 7, 4} 
+        }; 
 
-	// Blank tile coordinates in initial 
-	// configuration 
-	int x = 1, y = 2; 
-
-	solve(initial, x, y, final); 
-
-	return 0; 
-}
+        // Koordinat petak kosong dalam konfigurasi awal
+           int a = 1, b = 2; 
+            solve(initial, a, b, final); 
+                return 0; 
+        }
