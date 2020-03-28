@@ -1,0 +1,14 @@
+* Metode Iterative Deepening A* Iterative-Deepening A* (IDA*) search algorithm adalah pengembangan dari A*search algorithm 
+yang dikombinasikan dengan iterative deepening search. IDA* search algorithm merupakan best-first searches yang optimal 
+dalam hal solution cost, time, dan space. Prinsip algoritma iterative deepening search adalah melakukan depth-limited search 
+secara bertahap dengan nilai l yang incremental .
+
+* Iteratif memperdalam kedalaman-pertama pencarian (IDS) adalah pencarian ruang strategi di mana pencarian mendalam-terbatas 
+dijalankan berulang kali, meningkatkan batas kedalaman dengan setiap iterasi sampai mencapai, kedalaman negara tujuan dangkal.
+
+* IDS menggabungkan depth-first pencari ruang-efisiensi dan kelengkapan luas-pertama pencarian ini (ketika faktor percabangan 
+terbatas). Ini adalah optimal ketika biaya jalan adalah fungsi non-penurunan kedalaman node.
+
+* Menurutku kalau ids itu tidak bisa untuk menentukan 8 puzzle, dia prinsipnya sama kyk dfs, loopingnya akan terus jalan sampai 
+level paling bawah
+
