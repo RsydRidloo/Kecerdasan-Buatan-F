@@ -16,11 +16,11 @@ table Boolean untuk menyimpan simpul yang te lah dikunjungi sehingga tidak ada s
         using namespace std; 
         #define M 3 
 
- 	struct Node 
-        { 
-        // menyimpan parent node dari current node
-        // membantu dalam melacak jejak ketika jawabannya ditemukan
-        Node* parent; 
+ 		struct Node 
+		{ 
+        	// menyimpan parent node dari current node
+        	// membantu dalam melacak jejak ketika jawabannya ditemukan
+        	Node* parent; 
 
         // menyimpan matrix 
         int mat[M][M]; 
