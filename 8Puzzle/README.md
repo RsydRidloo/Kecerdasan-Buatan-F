@@ -183,3 +183,13 @@ table Boolean untuk menyimpan simpul yang te lah dikunjungi sehingga tidak ada s
             solve(initial, a, b, final); 
                 return 0; 
         }
+
+2.DFS
+* Algoritma DFS (Depth First Search) adalah salah satu algoritma yang digunakan untuk pencarian jalur. Contoh yang dibahas kali
+ini adalah mengenai pencarian jalur yang melalui semua titik.
+Algoritma ini mirip dengan Algoritma BFS (Breadth First Search) yang sudah dijelaskan sebelumnya. Jika Algoritma BFS (Breadth
+First Search) melakukan perhitungan secara terurut dari urutan pertama sampai urutan terakhir, maka algoritma ini melakukan
+kebalikannya, yaitu melakukan perhitungan secara terurut dari urutan terakhir. Setelah menghabiskan semua kemungkinan dari titik
+terakhir, barulah mundur ke titik-titik sebelumnya sampai pada titik pertama.
+
+		
