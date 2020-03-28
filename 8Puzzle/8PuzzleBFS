@@ -47,7 +47,6 @@ int isSafe(int x, int y)
 	return (x >= 0 && x < N && y >= 0 && y < N); 
 } 
 
-// print path from root node to destination node 
 void printPath(Node* root) 
 { 
 	if (root == NULL) {
@@ -70,77 +69,48 @@ bool testing (int mat[N][N],int final [N] [N]){
  	return true;
  }
 
-// Function to solve N*N - 1 puzzle algorithm using 
-// Branch and Bound. x and y are blank tile coordinates 
-// in initial state 
 void solve(int initial[N][N], int x, int y, 
 		int final[N][N]) 
 { 
-	// Create a priority queue to store live nodes of 
-	// search tree; 
 	queue <Node*> pq;
-	
-	// create a root node and calculate its cost 
 	Node* root = newNode(initial, x, y, x, y, 0, NULL); 
-	
-	// Add root to list of live nodes; 
 	pq.push(root); 
 
-	// Finds a live node with least cost, 
-	// add its childrens to list of live nodes and 
-	// finally deletes it from the list. 
 	while (!pq.empty()) 
 	{ 
-		// Find a live node with least estimated cost 
 		Node* min = pq.front(); 
-
-		// The found node is deleted from the list of 
-		// live nodes 
 		pq.pop(); 
 			
-		// if min is an answer node 
 		if (testing (min->mat, final)) 
 		{ 
-			// print the path from root to destination; 
 			printPath(min); 
 			printf ("Move: %d",min->level);
 			return; 
 		} 
-		
-		// do for each child of min 
-		// max 4 children for a node 
 		for (int i = 0; i < 4; i++) 
 		{ 
 			if (isSafe(min->x + row[i], min->y + col[i])) 
 			{ 
-				// create a child node and calculate 
-				// its cost 
 				Node* child = newNode(min->mat, min->x, 
 							min->y, min->x + row[i], 
 							min->y + col[i], 
 							min->level + 1, min);  
 
-				// Add child to list of live nodes 
+			
 				pq.push(child); 
 			} 
 		} 
 	} 
 } 
 
-// Driver code 
 int main() 
 { 
-	// Initial configuration 
-	// Value 0 is used for empty space 
 	int initial[N][N] = 
 	{ 
 		{1, 2, 3}, 
 		{5, 6, 0}, 
 		{7, 8, 4} 
 	}; 
-
-	// Solvable Final configuration 
-	// Value 0 is used for empty space 
 	int final[N][N] = 
 	{ 
 		{1, 2, 3}, 
