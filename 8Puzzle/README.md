@@ -8,6 +8,8 @@ Simpulsimpul ini diperlukan sebagai acuan untuk mengunjungi simpul-simpul yang b
 Tiap simpul yang telah dikunjungu masuk ke dalam antrian hanya satu kali. Algoritma ini juga membutuhkan 
 table Boolean untuk menyimpan simpul yang te lah dikunjungi sehingga tidak ada simpul yang dikunjungi lebih dari satu kali.
 
+Gambar compile & run https://github.com/TropEX/Kecerdasan-Buatan-F/issues/5#issue-590128645
+
 
         /*Menggunakan branch and bound yang merupakan algoritma
           Breath First Search yang berjalan layaknya penggunaan queue */
