@@ -7,8 +7,8 @@ dapat memenangkan permainan. Dengan menanambahkan algoritma minimax pada permain
 membuat komputer dapat leluasa mencari solusi terbaik dan membuat komputer memenangkan permainan. Adapun hasil terbaik yang 
 dapat diperoleh oleh pemain adalah hasil imbang. Algoritma minimax juga tidak terlalu sulit untuk diterapkan pada 
 permainan tic-tactoe.     
-            
-            
+        
+* Gambar compile & run https://github.com/TropEX/Kecerdasan-Buatan-F/issues/6#issue-590134994
             
             
         #include <stdio.h>
